@@ -38,7 +38,11 @@
 
   const iastInput = document.querySelector("#iastInput");
   const iastOutput = document.querySelector("#iastOutput");
-  const updateInput = () => { iastOutput.textContent = iastToSiddham(iastInput.value); };
+  const iastPreview = document.querySelector("#iastPreview");
+  const updateInput = () => {
+    iastOutput.textContent = iastToSiddham(iastInput.value);
+    iastPreview.textContent = formatIastForPreview(iastInput.value);
+  };
   iastInput.addEventListener("input", updateInput);
   const randomSample = Object.assign(document.createElement("button"), {
     type: "button", textContent: "十小咒隨機範例", disabled: !(window.USER_MANTRA_IAST || []).length
