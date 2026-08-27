@@ -82,6 +82,12 @@
   previewSpacing.innerHTML = '上下間距 <input id="siddhamDocumentPreviewSpacing" type="number" min="-9" max="12" step="1" value="0" inputmode="numeric" aria-label="逐行閱讀預覽上下間距"> px';
   document.querySelector("#siddhamDocumentPreview").previousElementSibling.appendChild(previewSpacing);
 
+  const previewWordGap = document.createElement("label");
+  previewWordGap.className = "preview-spacing-control";
+  previewWordGap.title = "0 為預設；負數更靠近，正數更疏";
+  previewWordGap.innerHTML = '字距 <input id="siddhamDocumentPreviewWordGap" type="number" min="-18" max="40" step="1" value="0" inputmode="numeric" aria-label="逐行閱讀預覽字距"> px';
+  document.querySelector("#siddhamDocumentPreview").previousElementSibling.appendChild(previewWordGap);
+
   window.SiddhamDocumentEditor.init({
     convertIast: text => text.split(/\r?\n/).map(iastToSiddham).join("\n"),
     formatIast: formatIastForPreview,

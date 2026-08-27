@@ -84,7 +84,8 @@
       glyphStyle: controls.glyphStyle.value,
       siddhamSize: controls.fontSize.value,
       previewOrder: controls.previewOrder.value,
-      previewSpacing: controls.previewSpacing.value
+      previewSpacing: controls.previewSpacing.value,
+      previewWordGap: controls.previewWordGap.value
     };
   }
 
@@ -102,6 +103,9 @@
     controls.previewSpacing.value = /^-?(?:[0-9]|1[0-2])$/.test(String(selected.previewSpacing || ""))
       ? String(selected.previewSpacing)
       : "0";
+    controls.previewWordGap.value = /^-?(?:[0-9]|1[0-8]|[23][0-9]|40)$/.test(String(selected.previewWordGap || ""))
+      ? String(selected.previewWordGap)
+      : "0";
     const features = ['"liga" 1', '"dlig" 1', '"clig" 1', '"ccmp" 1'];
     if (controls.glyphStyle.value !== "standard") {
       features.push(`"${controls.glyphStyle.value}" 1`);
@@ -115,6 +119,7 @@
     controls.view.style.setProperty("--editor-preview-iast-size", `${Math.round(previewBaseSize * (iastPrimary ? 0.75 : 0.57))}px`);
     controls.view.style.setProperty("--editor-preview-siddham-size", `${previewBaseSize}px`);
     controls.view.style.setProperty("--editor-preview-spacing-adjust", `${controls.previewSpacing.value}px`);
+    controls.view.style.setProperty("--editor-preview-word-gap", `${22 + Number(controls.previewWordGap.value)}px`);
     controls.view.classList.toggle("preview-siddham-top", !iastPrimary);
     const previewLabel = document.querySelector("#siddhamDocumentPreviewLabel");
     if (previewLabel) previewLabel.textContent = iastPrimary ? "IAST 在上、悉曇在下" : "悉曇在上、IAST 在下";
@@ -307,7 +312,7 @@
     h1 { margin: 0 0 28px; font-size: 1.55rem; font-weight: 600; }
     h1 small { color: #786f69; font-size: .66em; font-weight: 400; }
     .pair { margin: 0 0 1.35rem; padding: 15px 18px; border: 1px solid #d9d1c8; border-radius: 8px; background: #fffdf9; break-inside: avoid; }
-    .word-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px 22px; }
+    .word-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px ${22 + Number(appearance.previewWordGap || 0)}px; }
     .word { display: grid; gap: 4px; min-width: max-content; text-align: center; }
     .iast { font-size: ${previewIastSize}px; line-height: 1.25; }
     .siddham { font-family: ${exportSiddhamFont}; font-size: ${appearance.siddhamSize}px; line-height: 1.45; font-feature-settings: ${features.join(", ")}; text-rendering: optimizeLegibility; }
@@ -509,7 +514,8 @@
       glyphStyle: document.querySelector("#siddhamDocumentGlyphStyle"),
       fontSize: document.querySelector("#siddhamDocumentFontSize"),
       previewOrder: document.querySelector("#siddhamDocumentPreviewOrder"),
-      previewSpacing: document.querySelector("#siddhamDocumentPreviewSpacing")
+      previewSpacing: document.querySelector("#siddhamDocumentPreviewSpacing"),
+      previewWordGap: document.querySelector("#siddhamDocumentPreviewWordGap")
     };
     if (!controls.iast || !controls.siddham || !controls.preview) return;
 
@@ -519,7 +525,7 @@
       event.preventDefault();
       reportStatus("已複製原始 Unicode 悉曇字。");
     });
-    [controls.iastFont, controls.siddhamFont, controls.glyphStyle, controls.fontSize, controls.previewOrder, controls.previewSpacing].forEach((control) => {
+    [controls.iastFont, controls.siddhamFont, controls.glyphStyle, controls.fontSize, controls.previewOrder, controls.previewSpacing, controls.previewWordGap].forEach((control) => {
       control.addEventListener("change", () => {
         applyAppearance(currentAppearance());
         syncLegacyOutput();
