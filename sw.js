@@ -1,4 +1,4 @@
-const CACHE_NAME = "siddham-iast-studio-v1";
+const CACHE_NAME = "siddham-iast-studio-v2";
 const PRECACHE_URLS = [
   "./",
   "./index.html",
@@ -27,16 +27,16 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  // Network-first: always prefer a fresh copy when online, so edits show
+  // up on next reload without needing to clear cached data by hand.
+  // Only fall back to the cache when there's no network (offline use).
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      const network = fetch(event.request).then(response => {
-        if (response && response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        }
-        return response;
-      }).catch(() => cached);
-      return cached || network;
-    })
+    fetch(event.request).then(response => {
+      if (response && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+      }
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });
