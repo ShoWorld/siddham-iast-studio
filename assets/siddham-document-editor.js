@@ -313,7 +313,7 @@
     h1 small { color: #786f69; font-size: .66em; font-weight: 400; }
     .pair { margin: 0 0 1.35rem; padding: 15px 18px; border: 1px solid #d9d1c8; border-radius: 8px; background: #fffdf9; break-inside: avoid; }
     .word-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px ${22 + Number(appearance.previewWordGap || 0)}px; }
-    .word { display: grid; gap: 4px; min-width: max-content; text-align: center; }
+    .word { display: grid; gap: calc(4px + ${Number(appearance.previewSpacing) || 0}px); min-width: max-content; text-align: center; }
     .iast { font-size: ${previewIastSize}px; line-height: 1.25; }
     .siddham { font-family: ${exportSiddhamFont}; font-size: ${appearance.siddhamSize}px; line-height: 1.45; font-feature-settings: ${features.join(", ")}; text-rendering: optimizeLegibility; }
     .word .siddham { white-space: nowrap; }
