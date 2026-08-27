@@ -1547,6 +1547,9 @@ window.USER_MANTRA_IAST_TERMS = window.USER_MANTRA_IAST.flatMap((record) => [
 </script>
 <script>
 (() => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
   const status = document.querySelector("#status");
   const setStatus = message => { status.textContent = message; };
   const copyText = async text => {

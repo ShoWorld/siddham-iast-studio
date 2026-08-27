@@ -1,4 +1,7 @@
 (() => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  }
   const status = document.querySelector("#status");
   const setStatus = message => { status.textContent = message; };
   const copyText = async text => {
